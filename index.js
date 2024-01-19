@@ -51,5 +51,39 @@ async function promptManager() {
     }
 }
 
-// Call the promptManager function to start the process
-promptManager();
+// Main function
+async function main() {
+    try {
+        // Prompt for the team manager's information
+        await promptManager();
+
+        while (true) {
+            // Prompt user for the next action
+            const action = await inquirer.prompt({
+                type: 'list',
+                name: 'action',
+                message: 'Select an action:',
+                choices: ['Add an engineer', 'Add an intern', 'Finish building the team'],
+            });
+
+            if (action.action === 'Add an engineer') {
+                // Prompt for engineer's information and add to the teamMembers array
+                await promptEngineer();
+            } else if (action.action === 'Add an intern') {
+                // Prompt for intern's information and add to the teamMembers array
+                await promptIntern();
+            } else {
+                // Finish building the team and generate HTML
+                const html = render(teamMembers);
+                fs.writeFileSync(outputPath, html);
+                console.log(`HTML generated and saved to: ${outputPath}`);
+                break; // Exit the loop and end the application
+            }
+        }
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+}
+
+// Call the main function to start the application
+main();
