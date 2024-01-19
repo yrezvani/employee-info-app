@@ -159,7 +159,6 @@ async function main() {
                 await promptNextAction();
             } else {
                 // Finish building the team and generate HTML
-                console.log(teamMembers);
                 const html = render(teamMembers);
                 // Create the output directory if it doesn't exist
                 if (!fs.existsSync(OUTPUT_DIR)) {
