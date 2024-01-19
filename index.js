@@ -13,7 +13,7 @@ const render = require("./src/page-template.js");
 // Initialize an array to store team members
 const teamMembers = [];
 
-// Define an asynchronous function to prompt for manager information
+// Asynchronous function to prompt for manager information
 async function promptManager() {
     try {
         // Use inquirer to prompt the user for manager information
@@ -47,6 +47,44 @@ async function promptManager() {
         teamMembers.push(manager);
     } catch (error) {
         // Handle errors by logging an error message to the console
+        console.error('Error:', error.message);
+    }
+}
+
+// Asynchronous function named promptEngineer
+async function promptEngineer() {
+    try {
+        // Use the inquirer library to prompt the user for information about an engineer        
+        const engineerInfo = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: "Enter the engineer's name:",
+            },
+            {
+                type: 'input',
+                name: 'id',
+                message: "Enter the engineer's employee ID:",
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "Enter the engineer's email address:",
+            },
+            {
+                type: 'input',
+                name: 'github',
+                message: "Enter the engineer's GitHub username:",
+            },
+        ]);
+
+        // Create a new Engineer object with the collected information        
+        const engineer = new Engineer(engineerInfo.name, engineerInfo.id, engineerInfo.email, engineerInfo.github);
+
+        // Add the newly created engineer object to the teamMembers array
+        teamMembers.push(engineer);
+    } catch (error) {
+        // If an error occurs during the asynchronous operation, log the error message to the console
         console.error('Error:', error.message);
     }
 }
