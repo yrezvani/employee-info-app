@@ -1,0 +1,21 @@
+{
+  "name": "employee-info-app",
+  "version": "1.0.0",
+  "description": "Generates HTML file containing information about employees",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^8.2.6"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0"
+  }
+}
