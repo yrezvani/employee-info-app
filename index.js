@@ -135,8 +135,8 @@ async function main() {
         // Prompt for the team manager's information
         await promptManager();
 
-        while (true) {
-            // Prompt user for the next action
+        // Recursive function to continue prompting until finish
+        const promptNextAction = async () => {
             const action = await inquirer.prompt({
                 type: 'list',
                 name: 'action',
@@ -147,11 +147,16 @@ async function main() {
             if (action.action === 'Add an engineer') {
                 // Prompt for engineer's information and add to the teamMembers array
                 await promptEngineer();
+                // Recursively call promptNextAction
+                await promptNextAction();
             } else if (action.action === 'Add an intern') {
                 // Prompt for intern's information and add to the teamMembers array
                 await promptIntern();
+                // Recursively call promptNextAction
+                await promptNextAction();
             } else {
                 // Finish building the team and generate HTML
+                console.log(teamMembers);
                 const html = render(teamMembers);
                 // Create the output directory if it doesn't exist
                 if (!fs.existsSync(OUTPUT_DIR)) {
@@ -159,13 +164,17 @@ async function main() {
                 }
                 fs.writeFileSync(outputPath, html);
                 console.log(`HTML generated and saved to: ${outputPath}`);
-                break; // Exit the loop and end the application
+                // No need for a break as the function will naturally exit
             }
-        }
+        };
+
+        // Start the recursive prompting
+        await promptNextAction();
     } catch (error) {
         console.error('Error:', error.message);
     }
 }
+
 
 // Call the main function to start the application
 main();
