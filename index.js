@@ -10,6 +10,46 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
 
+// Initialize an array to store team members
+const teamMembers = [];
 
-// TODO: Write Code to gather information about the development team members, and render the HTML file.
+// Define an asynchronous function to prompt for manager information
+async function promptManager() {
+    try {
+        // Use inquirer to prompt the user for manager information
+        const managerInfo = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: "Enter the team manager's name:",
+            },
+            {
+                type: 'number',
+                name: 'id',
+                message: "Enter the team manager's employee ID:",
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "Enter the team manager's email address:",
+            },
+            {
+                type: 'number',
+                name: 'officeNumber',
+                message: "Enter the team manager's office number:",
+            },
+        ]);
 
+        // Create a new Manager instance using the provided information
+        const manager = new Manager(managerInfo.name, managerInfo.id, managerInfo.email, managerInfo.officeNumber);
+
+        // Add the manager to the teamMembers array
+        teamMembers.push(manager);
+    } catch (error) {
+        // Handle errors by logging an error message to the console
+        console.error('Error:', error.message);
+    }
+}
+
+// Call the promptManager function to start the process
+promptManager();
