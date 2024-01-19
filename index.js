@@ -62,7 +62,7 @@ async function promptEngineer() {
                 message: "Enter the engineer's name:",
             },
             {
-                type: 'input',
+                type: 'number',
                 name: 'id',
                 message: "Enter the engineer's employee ID:",
             },
@@ -89,6 +89,46 @@ async function promptEngineer() {
     }
 }
 
+// Asynchronous function named promptIntern
+async function promptIntern() {
+    try {
+        // Use the inquirer library to prompt the user for information about an intern        
+        const internInfo = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: "Enter the intern's name:",
+            },
+            {
+                type: 'number',
+                name: 'id',
+                message: "Enter the intern's employee ID:",
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "Enter the intern's email address:",
+            },
+            {
+                type: 'input',
+                name: 'school',
+                message: "Enter the intern's school:",
+            },
+        ]);
+
+        // Create a new Intern object with the collected information        
+        const intern = new Intern(internInfo.name, internInfo.id, internInfo.email, internInfo.school);
+
+        // Add the newly created intern object to the teamMembers array        
+        teamMembers.push(intern);
+    } catch (error) {
+
+        // If an error occurs during the asynchronous operation, log the error message to the console        
+        console.error('Error:', error.message);
+    }
+}
+
+
 // Main function
 async function main() {
     try {
@@ -113,6 +153,10 @@ async function main() {
             } else {
                 // Finish building the team and generate HTML
                 const html = render(teamMembers);
+                // Create the output directory if it doesn't exist
+                if (!fs.existsSync(OUTPUT_DIR)) {
+                    fs.mkdirSync(OUTPUT_DIR);
+                }
                 fs.writeFileSync(outputPath, html);
                 console.log(`HTML generated and saved to: ${outputPath}`);
                 break; // Exit the loop and end the application
